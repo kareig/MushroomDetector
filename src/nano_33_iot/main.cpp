@@ -18,10 +18,10 @@ void setup() {
 #endif
   
   while(!BHY2Host.begin(false, NICLA_VIA_BLE)) {}
-  temperatureSensor.begin();
-  humiditySensor.begin();
-  pressureSensor.begin();
-  gasSensor.begin();
+  temperatureSensor.begin(200,1);
+  humiditySensor.begin(200,1);
+  pressureSensor.begin(200,1);
+  gasSensor.begin(200,1);
 }
 
 void loop() {  
