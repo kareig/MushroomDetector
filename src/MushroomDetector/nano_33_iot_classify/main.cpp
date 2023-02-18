@@ -48,6 +48,9 @@ void print_inference_result(ei_impulse_result_t result);
 
 U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE);
 
+void blink(unsigned long ms);
+
+#define DEBUG false
 #define DEBUG_BHY2Host true
 #define DEBUG_NN    false
 #define ANOMALY_THRESHOLD   0.3                       // Scores above this are an "anomaly"
@@ -71,8 +74,7 @@ void setup()
 #if DEBUG_BHY2Host
     BHY2Host.debug(Serial);
 #endif
-    Serial.println("Edge Impulse Inferencing Demo");
-
+  
     while(!BHY2Host.begin(false, NICLA_VIA_BLE)) {}
     
     temp.begin(200,1);
@@ -97,7 +99,9 @@ void loop()
     int max_idx = 0;
     float max_val = 0.0;
     unsigned long timestamp;
-    char str_buf[40];
+    char str_buf[15];
+    char OldLabel[15];
+    char NewLabel[15];
 
     ei_printf("Edge Impulse standalone inferencing (Arduino)\n");
 
@@ -168,13 +172,18 @@ void loop()
   // Print predicted label and value to LCD if not anomalous
   if (result.anomaly < ANOMALY_THRESHOLD) {
 
-    sprintf(str_buf, "%.3f", max_val);
     u8x8.setFont(u8x8_font_7x14B_1x2_f);
-    u8x8.drawString(0,0, "Label:");
-    u8x8.drawString(6,0, String(result.classification[max_idx].label).c_str());
-    u8x8.drawString(0,2, "Score:");
-    u8x8.drawString(6,2, String(str_buf).c_str());
-  
+    sprintf(NewLabel, "%s", result.classification[max_idx].label);
+
+      if (strcmp(NewLabel,OldLabel) != 0) {
+          sprintf(OldLabel, "%s", NewLabel);      
+          u8x8.drawString(0,0, "         ");
+          u8x8.drawString(0,0, String(NewLabel).c_str());
+      }
+
+    sprintf(str_buf, "%.3f", max_val);
+    u8x8.drawString(0,2, String(str_buf).c_str());
+    
     u8x8.setFont(u8x8_font_8x13_1x2_f);
     sprintf(str_buf,"t:%.2f",temp.value());
     u8x8.drawString(0,4, String(str_buf).c_str());
@@ -202,4 +211,21 @@ void loop()
 
   ei_printf("EI_CLASSIFIER_RAW_SAMPLE_COUNT: %.d\r\n",EI_CLASSIFIER_RAW_SAMPLE_COUNT);
   ei_printf("EI_CLASSIFIER_RAW_SAMPLES_PER_FRAME: %.d\r\n",EI_CLASSIFIER_RAW_SAMPLES_PER_FRAME);
+
+  u8x8.setFont(u8x8_font_open_iconic_embedded_2x2);
+  u8x8.drawGlyph(14, 0, 0x4a);
+
+  blink(2500);
+}
+
+void blink(unsigned long ms)
+{
+  unsigned long start = millis();
+  unsigned long elapsed = 0;
+    while (elapsed < ms) {
+      u8x8.setFont(u8x8_font_open_iconic_thing_4x4);
+      u8x8.drawGlyph(10, 0, 0x4a);
+      u8x8.drawString(10,0," ");
+      elapsed = millis() - start;
+    }
 }
