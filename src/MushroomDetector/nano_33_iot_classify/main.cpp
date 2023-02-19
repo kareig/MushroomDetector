@@ -182,7 +182,10 @@ void loop()
       }
 
     sprintf(str_buf, "%.3f", max_val);
-    u8x8.drawString(0,2, String(str_buf).c_str());
+    u8x8.setCursor(0,2);
+    float x = (atof(str_buf)*100);
+    u8x8.print(x,1);
+    u8x8.print("%");
     
     u8x8.setFont(u8x8_font_8x13_1x2_f);
     sprintf(str_buf,"t:%.2f",temp.value());
