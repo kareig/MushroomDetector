@@ -1,7 +1,7 @@
 #include "Arduino_BHY2Host.h"
 #include "stdarg.h"
 
-#define FREQUENCY_HZ 10
+#define FREQUENCY_HZ 150
 
 #if (FREQUENCY_HZ <= 0)
 #error "FREQUENCY_HZ should have a value greater than 0"
