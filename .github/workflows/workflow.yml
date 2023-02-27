@@ -18,6 +18,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
           lfs: 'true'
+    - name: Checkout LFS objects
+      run: git lfs checkout
     - name: Cache pip
       uses: actions/cache@v2
       with:
