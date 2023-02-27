@@ -19,7 +19,7 @@ void setup()
 
   nicla::begin();
   nicla::leds.begin();
-  nicla::enableCharge(100);
+  nicla::enableCharge(200);
   updateLEDBatteryStatus(false);
   BHY2.begin();
 }

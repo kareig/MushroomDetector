@@ -25,7 +25,7 @@ __extension__\
   int32_t __RES, __ARG1 = (ARG1); \  
   __ASM volatile ("ssat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \  
   __RES; \  
-    })
+       })
 
 /* Includes ---------------------------------------------------------------- */
 #include <MushroomDetector_inferencing.h>
@@ -54,7 +54,7 @@ void blink(unsigned long ms);
 #define DEBUG_BHY2Host true
 #define DEBUG_NN false
 #define ANOMALY_THRESHOLD 0.3                                   // Scores above this are an "anomaly"
-#define SAMPLING_FREQ_HZ 200                                    // Sampling frequency (Hz)
+#define SAMPLING_FREQ_HZ 150                                    // Sampling frequency (Hz)
 #define SAMPLING_PERIOD_MS 1000 / SAMPLING_FREQ_HZ              // Sampling period (ms)
 #define NUM_SAMPLES EI_CLASSIFIER_RAW_SAMPLE_COUNT              // 50 samples at 10 Hz
 #define READINGS_PER_SAMPLE EI_CLASSIFIER_RAW_SAMPLES_PER_FRAME // 4 (4 sensor axes)
@@ -86,7 +86,7 @@ void setup()
 
   // initialize OLED display
   u8x8.begin();
-  u8x8.setFlipMode(360);
+  // u8x8.setFlipMode(360);
   u8x8.clearDisplay();
   u8x8.display();
 }
